@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'react'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Header from "./components/Header";
 import Tasks from './components/Tasks'
 import AddTask from "./components/AddTask";
-import { useState, useEffect } from 'react'
+import Footer from "./components/Footer";
+import About from "./components/About";
 
 function App() {
 
@@ -77,18 +80,29 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <Header showForm={showNewTaskForm} onToggle={() => setShowNewTaskForm(!showNewTaskForm)}/>
-      
-      {showNewTaskForm && <AddTask onSave={addNewTask}/>}
-      
-      {tasks.length > 0 ? (
-        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>
-      ): (
-        'No task to show'
-      )}
+    <Router>
+      <div className="container">
+        <Header showForm={showNewTaskForm} onToggle={() => setShowNewTaskForm(!showNewTaskForm)}/>
 
-    </div>
+        <Routes>
+          <Route path='/' element= {(
+            <>
+              {showNewTaskForm && <AddTask onSave={addNewTask}/>}
+          
+              {tasks.length > 0 ? (
+                <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>
+              ): (
+                'No task to show'
+              )}
+            </>
+          )} />
+
+          <Route path='/about' element={<About />} />
+        </Routes>
+    
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
